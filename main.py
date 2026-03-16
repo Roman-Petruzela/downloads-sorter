@@ -16,7 +16,8 @@ def list_files(folder_path):
 def get_extensions(files):
     extensions = []
     for f in files:
-        # Skip files without extension to avoid moving into the same folder.
+        if f.is_dir() and not extensions.contains("folders"):
+            extensions.append("folders")
         if not f.suffix:
             continue
         if f.suffix not in extensions:
@@ -34,13 +35,19 @@ def make_folders(folder_path, extensions):
 def move_files(files, folder_path):
     moved = 0
     for f in files:
+        if f.is_dir():
+            target_folder = folder_path / "folders"
+            target = target_folder / f.name
+            if target_folder.exists() and not target.exists():
+                shutil.move(str(f), str(target))
+                moved += 1
+            continue
         ext = f.suffix
         if not ext:
             continue
         target_folder = folder_path / ext
         if target_folder.exists():
             target_file = target_folder / f.name
-            # Keep it simple: if same file name exists, skip it.
             if target_file.exists():
                 continue
             shutil.move(str(f), str(target_file))
@@ -54,7 +61,6 @@ def main():
         if downloads_path is None:
             print("Downloads folder was not found.")
             return
-
         files = list_files(downloads_path)
         print(f"Files in downloads: {files}")
         extensions = get_extensions(files)
