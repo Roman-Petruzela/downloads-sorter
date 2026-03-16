@@ -9,14 +9,14 @@ def get_downloads_path():
 
 def list_files(folder_path):
     if folder_path is not None:
-        files = [f for f in folder_path.iterdir() if f.is_file()]
+        files = [f for f in folder_path.iterdir()]
         return files
     return []
 
 def get_extensions(files):
     extensions = []
     for f in files:
-        if f.is_dir() and not extensions.contains("folders"):
+        if f.is_dir() and "folders" not in extensions:
             extensions.append("folders")
         if not f.suffix:
             continue
