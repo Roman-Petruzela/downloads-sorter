@@ -16,8 +16,8 @@ def list_files(folder_path):
 def get_extensions(files):
     extensions = []
     for f in files:
-        if f.is_dir() and "folders" not in extensions:
-            extensions.append("folders")
+        if f.is_dir() and ".folders" not in extensions:
+            extensions.append(".folders")
         if not f.suffix:
             continue
         if f.suffix not in extensions:
@@ -36,7 +36,7 @@ def move_files(files, folder_path):
     moved = 0
     for f in files:
         if f.is_dir():
-            target_folder = folder_path / "folders"
+            target_folder = folder_path / ".folders"
             target = target_folder / f.name
             if target_folder.exists() and not target.exists():
                 shutil.move(str(f), str(target))
