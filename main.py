@@ -9,7 +9,7 @@ def get_downloads_path():
 
 def list_files(folder_path):
     if folder_path is not None:
-        files = [f for f in folder_path.iterdir()]
+        files = [f for f in folder_path.iterdir() if not (f.is_dir() and f.name.startswith("."))]
         return files
     return []
 
